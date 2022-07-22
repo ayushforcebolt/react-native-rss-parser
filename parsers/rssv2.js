@@ -59,6 +59,8 @@ const getChannelImage = (node) => {
   }
 
   const imageNode = imageNodes[0];
+  // console.log("RssFeed0011",imageNode);
+  // console.log("RssFeed0011",utils.getElementTextContent(imageNode, 'url'));
 
   return {
     url: utils.getElementTextContent(imageNode, 'url'),
@@ -70,7 +72,34 @@ const getChannelImage = (node) => {
 };
 
 const getItemTitle = (node) => utils.getElementTextContent(node, 'title');
+const getItemImage = (node) => {
+  // console.log("RssFeed00",node);
+  const imageNodes = utils.getChildElements(node, 'image');
 
+  if (imageNodes.length === 0) {
+    return {
+      url: undefined,
+      // title: undefined,
+      // description: undefined,
+      // width: undefined,
+      // height: undefined,
+    };
+  }
+  console.log("RssFeed00",imageNodes[0]);
+  const imageNode = imageNodes[0];
+
+  console.log("RssFeed00",imageNode.childNodes[0].data);
+  // console.log("RssFeed00",utils.getElementTextContent(imageNode, 'image'));
+  // console.log("RssFeed00",utils.getElementTextContent(imageNode, 'link'));
+
+  return {
+    url: imageNode.childNodes[0].data,
+    // title: utils.getElementTextContent(imageNode, 'title'),
+    // description: utils.getElementTextContent(imageNode, 'description'),
+    // width: utils.getElementTextContent(imageNode, 'width'),
+    // height: utils.getElementTextContent(imageNode, 'height'),
+  };
+}
 const getItemLinks = (node) => {
   const links = utils.getChildElements(node, 'link');
 
@@ -158,6 +187,7 @@ const mapItems = (document) => {
     links: getItemLinks(item),
     description: getItemDescription(item),
     content: getItemContent(item),
+    imageUrl:getItemImage(item),
     id: getItemId(item),
     authors: getItemAuthors(item),
     categories: getItemCategories(item),
